@@ -1,0 +1,22 @@
+services:
+  artisan:
+    build:
+      context: .
+      dockerfile: dockerfile.artisan
+    volumes:
+      - ".:/app"
+    ports:
+      - "8000:8000"
+    networks:
+      - internal
+  vite:
+    build:
+      context: .
+      dockerfile: dockerfile.vite
+    volumes:
+      - ".:/app"
+    ports:
+      - "5173:5173"
+networks:
+  internal:
+    driver: bridge

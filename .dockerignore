@@ -1,0 +1,8 @@
+bootstrap/cache
+node_modules
+public/hot
+vendor
+storage
+.phpunit.result.cache
+.env
+database/database.sqlite
