@@ -47,7 +47,6 @@ RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage/framework/views
 RUN mkdir -p /var/www/html/storage/logs
 
-RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage/logs
 
 ENV APP_DEBUG=false
@@ -55,6 +54,4 @@ ENV APP_ENV=production
 RUN php artisan view:cache
 
 EXPOSE 80
-USER www-data
-RUN touch database/database.sqlite
-ENTRYPOINT ["sh", "-c", "php artisan migrate --force && apache2-foreground"]
+ENTRYPOINT ["sh", "-c", "php artisan config:cache && php artisan migrate --force && apache2-foreground"]
