@@ -1,66 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Entorno de desarrolla laravel+vite+docker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+docker compose up --build -d
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## resumen de comando utiles
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+# iniciar todos los servicios
+docker compose up --build
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# agregar dependencia de composer
+docker compose exec artisan php arsisan install <package-name>
 
-## Learning Laravel
+# ejecutar las validaciones de calidad de codigo manualmente
+docker compose exec artisan vendor/bin/phpstan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# ejecutar las pruebas unitarias manualmente
+docker compose exec artisan vendor/bin/phpunit
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# agregar dependencia de npm
+docker compose exec vite npm install <package-name>
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Descripcion de los servicios
 
-## Laravel Sponsors
+## artisan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Ese servicio ejecuta un "php artisan serve".
 
-### Premium Partners
+Este servicio esta disponble en http://localhost:8080.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+El mismo tiene un volumen montado, por lo cual, cualquier cambio en el código fuente se aplica de inmediato.
 
-## Contributing
+El mismo tiene soporte de depuración.Se debe iniciar la depuración en el IDE, y luego en el navegador tambien habilitarlo. Se utiliza XDebug3.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Al iniciar ejecuta un "composer install" y "artisan migrate" para inicializar la aplicación.
 
-## Code of Conduct
+Como base de datos, utiliza una base de datos SQLite ubicada en database/database.sqlite
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Se puede ejecutar comando dentro del contenedor para por ejemplo, agregar paquetes de composer.
 
-## Security Vulnerabilities
+Para ejecutar un comando en el contenedor debe ejecutarse "docker compose exec artisan {comoando-a-ejecutar} {parametros-del-comando}"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## vite
 
-## License
+Este servicio ejecuta un "npm run dev"
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+El mismo esta disponible en http://localhost:5173.
+
+Este servicio tiene la finalidad de mantener los recursos de la aplicacion compilados en tiempo real.
+
+Al iniciar ejecuta automaticamente con "npm install"
+
+Esta imagen se puede utilizar para agregar paquetes de npm ejecutando comandos dentro del contenedor.
+
+Para el mismo se puede usar el comando "docker compose exec vite {comando-de-npm}"
+
+## mysql
+
+En este servicio se ejecuta una base de datos mysql, para poder realizar pruebas de entornos clones de productivo.
+
+Se puede conectar a la base de datos con estas credenciales. Usuario mysql_user, contreseña mysql_password, base de datos "mysql_database" y el host "localhost:3306"
+
+## apache
+
+En este servicio se ejecuta un apache en modo productivo.
+
+Se puede acceder al servicio por http://localhost
+
+Ese servicio realiza varias operaciones antes de iniciar.
+
+Primero ejecuta todos los test, tanto unitarios como de integracion utilzando SQLite. Luego realiza pruebas de calidad de código con PHPStan.
+
+Ese servicio realiza una copia del codigo fuente dentro del contenedor. Descarga dependencias con composer install y npm install.
+
+Compila todos los recursos de manera estatica para no requerir un servidor de vite.
+
+Inicia conectandose a la base de datos MySQL.
+
+Para actualizar las fuentes de este servidor es necesario reconstruir el contenedor, tal como se hace en un servidor productivo.

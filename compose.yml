@@ -47,6 +47,8 @@ services:
       interval: 1s
       timeout: 1s
       retries: 20
+    ports:
+      - "3306:3306"
 networks:
   internal:
     driver: bridge
