@@ -1,12 +1,12 @@
-FROM node:21.7.1-bookworm AS npm
+FROM node:21.7.1-bookworm AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY resources ./resources
+COPY vite.config.js .
 RUN npm run build
 
-
-FROM php:8.3.3-cli-bookworm AS composer
+FROM php:8.3.3-cli-bookworm AS tests
 RUN apt update && apt install -y unzip
 RUN curl https://getcomposer.org/download/2.7.2/composer.phar -o /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
@@ -17,11 +17,25 @@ ENV XDEBUG_MODE="coverage"
 
 WORKDIR /app
 COPY composer.json composer.lock ./
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-scripts
 ENV APP_KEY=base64:b/X36sZl1xENbFcGjXDBZtjhdpEvTaVEdPrLhaFuZbc=
 ENV APP_DEBUG=true
 ENV APP_ENV=testing
-COPY . .
+
+COPY artisan .
+COPY bootstrap ./bootstrap
+COPY public ./public
+COPY composer.json .
+COPY config ./config
+COPY database ./database
+COPY routes ./routes
+COPY resources/views ./resources/views
+COPY app ./app
+COPY tests ./tests
+COPY phpstan.neon .
+COPY phpunit.xml .
+
 RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage/framework/views
 RUN touch .env
@@ -38,9 +52,19 @@ RUN docker-php-ext-install mysqli pdo_mysql
 RUN sed -i 's|html|html/public|' /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 
-COPY --from=composer /app/vendor ./vendor
-COPY --from=npm /app/public/build ./public/build
-COPY . .
+COPY --from=tests /app/vendor ./vendor
+COPY --from=assets /app/public/build ./public/build
+
+COPY artisan .
+COPY bootstrap ./bootstrap
+COPY public ./public
+COPY composer.json .
+COPY config ./config
+COPY database ./database
+COPY routes ./routes
+COPY resources/views ./resources/views
+COPY app ./app
+
 RUN touch .env
 
 RUN mkdir -p bootstrap/cache
