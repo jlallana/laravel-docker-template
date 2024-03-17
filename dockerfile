@@ -39,7 +39,7 @@ COPY phpunit.xml .
 RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage/framework/views
 RUN touch .env
-COPY --from=npm /app/public/build  ./public/build
+COPY --from=assets /app/public/build  ./public/build
 RUN ./vendor/bin/phpstan analyse
 RUN ./vendor/bin/phpunit
 RUN composer install --no-dev
