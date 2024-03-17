@@ -14,6 +14,7 @@ ENV XDEBUG_CONFIG="client_host=host.docker.internal start_with_request=trigger d
 ENV APP_KEY=base64:b/X36sZl1xENbFcGjXDBZtjhdpEvTaVEdPrLhaFuZbc=
 ENV APP_DEBUG=true
 ENV APP_ENV=local
+ENV APP_URL=http://localhost:8000
 ENV VIEW_COMPILED_PATH=/tmp
 
 USER 1000
