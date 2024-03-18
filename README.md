@@ -79,3 +79,8 @@ Compila todos los recursos de manera estatica para no requerir un servidor de vi
 Inicia conectandose a la base de datos MySQL.
 
 Para actualizar las fuentes de este servidor es necesario reconstruir el contenedor, tal como se hace en un servidor productivo.
+
+
+## keycloak
+
+Servicio de autenticacion en http://localhost:8080
