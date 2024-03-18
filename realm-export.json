@@ -663,10 +663,12 @@
       "alwaysDisplayInConsole": true,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost/*"
+        "http://localhost/*",
+        "http://localhost:8000/*"
       ],
       "webOrigins": [
-        "http://localhost/*"
+        "http://localhost/*",
+        "http://localhost:8000/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
