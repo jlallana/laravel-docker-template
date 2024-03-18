@@ -10,3 +10,4 @@ dockerfile
 dockerfile.artisan
 dockerfile.vite
 compose.yml
+realm-export.json
