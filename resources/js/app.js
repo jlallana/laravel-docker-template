@@ -1,46 +1,37 @@
 import axios from 'axios';
 import './bootstrap';
 
+function getToken() {
 
-addEventListener('load', function() {
+    return new Promise((resolve, reject) => {
 
-    var code = new URLSearchParams(window.location.search).get('code');
+        try {
+        var token = JSON.parse(localStorage.getItem('token'));
 
-    if(code) {
-        var data = new URLSearchParams();
-        data.append('client_id', 'localhost');
-        data.append('grant_type', 'authorization_code');
-        data.append('code', code);
-        data.append('redirect_uri', 'http://localhost:8000');
+        var tokenData =  atob(token.access_token.split('.')[1]);
+        } catch(e) {
+            reject();
+            return;
+        }
 
-        fetch('http://localhost:8080/realms/localhost/protocol/openid-connect/token', {
-            method: 'POST',
-            body: data,
-            credentials: 'omit'
-        }).then(response => response.text())
-        .then(result => {
-          localStorage.setItem('token', result);
-          window.location.replace(window.location.pathname);
-        });      
-    }
-});
+        if(tokenData.exp < Math.floor(Date.now() / 1000)) {
+            reject();
+            return;
+        }
 
+        resolve(token.access_token);
+    });
+}
 
-axios.interceptors.request.use(async (config) => {
-
-    var token = localStorage.getItem('token');
-
-    if(!token) {
-        window.location.href = "http://localhost:8080/realms/localhost/protocol/openid-connect/auth?client_id=localhost&redirect_uri=http://localhost:8000&response_type=code&scope=openid";
-    }
-
-    let token2 = JSON.parse(token);
-    config.headers['Authorization'] = `Bearer ${token2.access_token}`;
-    return config;
-}, error => {
-    console.error('Error al enviar la solicitud:', error);
-    return Promise.reject(error);
-});
+axios.interceptors.request.use((config) => new Promise((resolve, reject) => {
+        var token = getToken().then((token) => {
+            config.headers['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('token')).access_token}`;
+            resolve(config);
+        }).catch(() => {
+            window.open('/auth', '_blank');
+            reject();
+        });    
+}));
 
 
-window.hello = async() =>alert((await axios.get('/api/hello')).data)
+window.hello = async() => alert((await axios.get('/api/hello')).data);
