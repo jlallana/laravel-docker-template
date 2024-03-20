@@ -9,8 +9,17 @@ docker compose up --build -d
 # iniciar todos los servicios
 docker compose up --build
 
+# ejecutar comando de artisan
+docker compose exec artisan php arsitan <comando-de-artisan>
+
+# ejecutar migraciones limpiando la base de datos
+docker compose exec artisan php arsitan migrate:fresh --seed
+
 # agregar dependencia de composer
-docker compose exec artisan php arsisan install <package-name>
+docker compose exec artisan composer install <package-name>
+
+# agregar dependencia de npm
+docker compose exec vite npm install <package-name>
 
 # ejecutar las validaciones de calidad de codigo php manualmente
 docker compose exec artisan vendor/bin/phpstan
@@ -21,8 +30,6 @@ docker compose exec vite npm run lint
 # ejecutar las pruebas unitarias manualmente
 docker compose exec artisan vendor/bin/phpunit
 
-# agregar dependencia de npm
-docker compose exec vite npm install <package-name>
 ```
 
 # Descripcion de los servicios
