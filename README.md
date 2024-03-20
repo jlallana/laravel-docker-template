@@ -1,4 +1,4 @@
-# Entorno de desarrolla laravel+vite+docker
+# Entorno de desarrolla laravel+vite+vue+docker
 
 
 docker compose up --build -d
@@ -29,6 +29,8 @@ docker compose exec vite npm install <package-name>
 Ese servicio ejecuta un "php artisan serve".
 
 Este servicio esta disponble en http://localhost:8080.
+
+Con vite se le da soporte al proyecto para cargar una aplicacion vue.js
 
 El mismo tiene un volumen montado, por lo cual, cualquier cambio en el código fuente se aplica de inmediato.
 
@@ -79,8 +81,3 @@ Compila todos los recursos de manera estatica para no requerir un servidor de vi
 Inicia conectandose a la base de datos MySQL.
 
 Para actualizar las fuentes de este servidor es necesario reconstruir el contenedor, tal como se hace en un servidor productivo.
-
-
-## keycloak
-
-Servicio de autenticacion en http://localhost:8080
