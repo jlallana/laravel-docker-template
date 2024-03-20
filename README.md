@@ -1,7 +1,6 @@
-# Entorno de desarrolla laravel+vite+vue+docker
+# laravel+vite+vue+docker
 
-
-docker compose up --build -d
+![Descripción de la imagen](resources/img/landing.webp)
 
 ## resumen de comando utiles
 
