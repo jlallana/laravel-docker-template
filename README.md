@@ -12,8 +12,11 @@ docker compose up --build
 # agregar dependencia de composer
 docker compose exec artisan php arsisan install <package-name>
 
-# ejecutar las validaciones de calidad de codigo manualmente
+# ejecutar las validaciones de calidad de codigo php manualmente
 docker compose exec artisan vendor/bin/phpstan
+
+# ejecutar las validaciones de calidad de codigo javascript manualmente
+docker compose exec vite npm run lint
 
 # ejecutar las pruebas unitarias manualmente
 docker compose exec artisan vendor/bin/phpunit
