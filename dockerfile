@@ -4,6 +4,8 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY resources ./resources
 COPY vite.config.js .
+COPY .eslintrc.cjs .
+RUN npm run lint
 RUN npm run build
 
 FROM php:8.3.3-cli-bookworm AS tests

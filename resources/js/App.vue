@@ -1,5 +1,5 @@
 <template>
-    <title>Laravel - VUE</title>    
+    <title>Laravel - VUE</title>
     <img src="../img/landing.webp" alt="image" />
 </template>
 
