@@ -76,12 +76,9 @@ RUN mkdir -p /var/www/html/storage/logs
 
 RUN chown -R www-data:www-data /var/www/html/storage/logs
 
-ENV APP_DEBUG=yes
+ENV APP_DEBUG=no
 ENV APP_ENV=production
 RUN php artisan view:cache
-
-RUN touch database/database.sqlite
-RUN chown www-data:www-data database/database.sqlite
 
 EXPOSE 80
 ENTRYPOINT ["sh", "-c", "php artisan config:cache && php artisan migrate --force && apache2-foreground"]
