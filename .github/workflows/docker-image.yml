@@ -23,6 +23,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ github.repository_owner }}/${{ github.repository }}:latest
+          tags: ${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}
           cache-from: type=registry,ref=${{ github.repository_owner }}/${{ github.repository }}:buildcache
           cache-to: type=registry,ref=${{ github.repository_owner }}/${{ github.repository }}:buildcache,mode=max
