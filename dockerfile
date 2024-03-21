@@ -10,12 +10,13 @@ RUN npm run build
 
 FROM php:8.3.3-cli-bookworm AS tests
 RUN apt update && apt install -y unzip
-RUN curl https://getcomposer.org/download/2.7.2/composer.phar -o /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
 
 RUN pecl install xdebug-3.3.1
 RUN docker-php-ext-enable xdebug
 ENV XDEBUG_MODE="coverage"
+
+RUN curl https://getcomposer.org/download/2.7.2/composer.phar -o /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
 
 WORKDIR /app
 COPY composer.json composer.lock ./
