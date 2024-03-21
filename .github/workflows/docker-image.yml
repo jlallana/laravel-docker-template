@@ -23,6 +23,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: jlallana/laravel-template-app:latest
-          cache-from: type=registry,ref=jlallana/laravel-template-app:buildcache
-          cache-to: type=registry,ref=jlallana/laravel-template-app:buildcache,mode=max
+          tags: jlallana/laravel-docker-template:latest
+          cache-from: type=registry,ref=jlallana/laravel-docker-template:buildcache
+          cache-to: type=registry,ref=jlallana/laravel-docker-template:buildcache,mode=max
