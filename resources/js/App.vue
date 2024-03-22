@@ -1,6 +1,6 @@
 <template>
     <title>Laravel - VUE</title>
-    <img src="../img/landing.webp" alt="image" />
+    <img src="../img/landing.webp" alt="image" onclick="window.callService()" />
 </template>
 
 <style>
