@@ -159,5 +159,5 @@ window.callService = async function() {
         }
     });    
 
-    alert(await response.json());
+    alert((new Session(await response.json()).payload.email));
 }
