@@ -16,9 +16,11 @@ ENV APP_DEBUG=true
 ENV APP_ENV=local
 ENV APP_URL=http://localhost:8000
 ENV VIEW_COMPILED_PATH=/tmp
+ENV OAUTH_PROVIDER="https://accounts.google.com"
+ENV OAUTH_CLIENT_ID="290798039838-l5jssfu6gh4r66scp2bve1ki7p78l8jl.apps.googleusercontent.com"
 
 USER 1000
 WORKDIR /app
 
 EXPOSE 8000
-ENTRYPOINT ["sh", "-c", "touch .env && composer install --no-scripts && php artisan config:cache && php artisan migrate && php artisan serve --host=0.0.0.0"]
+ENTRYPOINT ["sh", "-c", "composer install --no-scripts && php artisan config:cache && php artisan migrate && printenv && php artisan serve --host=0.0.0.0"]

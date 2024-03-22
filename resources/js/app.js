@@ -143,8 +143,8 @@ class OIDC {
 }
 
 var oidc = new OIDC(
-    'https://accounts.google.com', 
-    '290798039838-l5jssfu6gh4r66scp2bve1ki7p78l8jl.apps.googleusercontent.com'
+    document.querySelector('meta[name="OAUTH_PROVIDER"]').getAttribute('content'), 
+    document.querySelector('meta[name="OAUTH_CLIENT_ID"]').getAttribute('content')
 );
 
 if(!oidc.isAuthRequest()) {

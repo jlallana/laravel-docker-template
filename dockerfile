@@ -68,7 +68,6 @@ COPY routes ./routes
 COPY resources/views ./resources/views
 COPY app ./app
 
-RUN touch .env
 
 RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage/framework/views
