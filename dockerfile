@@ -79,6 +79,8 @@ RUN chown -R www-data:www-data /var/www/html/storage/logs
 ENV APP_DEBUG=no
 ENV APP_ENV=production
 RUN php artisan view:cache
+ENV OAUTH_PROVIDER=https://accounts.google.com
+ENV OAUTH_CLIENT_ID=290798039838-l5jssfu6gh4r66scp2bve1ki7p78l8jl.apps.googleusercontent.com
 
 EXPOSE 80
 ENTRYPOINT ["sh", "-c", "php artisan config:cache && php artisan migrate --force && apache2-foreground"]

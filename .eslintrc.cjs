@@ -4,7 +4,7 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'standard',
+    'eslint:recommended',
     'plugin:vue/vue3-essential'
   ],
   overrides: [

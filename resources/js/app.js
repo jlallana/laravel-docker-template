@@ -1,7 +1,6 @@
-import './bootstrap'
-import { createApp } from 'vue'
-import App from './App.vue'
-
+import './bootstrap';
+import {createApp} from 'vue';
+import App from './App.vue';
 
 class Session {
     constructor(token) {
@@ -12,13 +11,12 @@ class Session {
             throw new Error('Token has expired');
         }
     }
-};
+}
 
 class OIDC {
-    constructor(privderUrl, clientId, clientSecret) {
+    constructor(privderUrl, clientId) {
         this.providerUrl = privderUrl;
         this.clientId = clientId;
-        this.clientSecret = clientSecret; 
     }
 
     isAuthRequest() {
@@ -78,8 +76,6 @@ class OIDC {
 
         try {
             return await this.getIdTokenMessage(state);
-        } catch(e) {
-            throw e;
         } finally {
             document.body.removeChild(iframe);
         }
@@ -146,7 +142,7 @@ class OIDC {
     }
 }
 
-window.oidc = new OIDC(
+var oidc = new OIDC(
     'https://accounts.google.com', 
     '290798039838-l5jssfu6gh4r66scp2bve1ki7p78l8jl.apps.googleusercontent.com'
 );

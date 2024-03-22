@@ -6,6 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Laravel + Vue example application." />
     </head>
-    <body>
+    <body data-oauth-provider={{ env('OAUTH_PROVIDER') }} data-oauth-client-id="{{ env ('OAUTH_CLIENT_ID')}}" >
     </body>
 </html>
